@@ -32,13 +32,19 @@
         cache: {}, //cached templates
         pending: {}, // queue of callbacks, waiting for template to load
         load: function(url, callback) {
+            callback = callback || function() {};
+
             if (this.cache[url]) { //template loaded, call cb
-                if (callback) callback(this.cache[url]);
+                callback(this.cache[url]);
                 return;
             }
 
-            this.pending[url] = this.pending[url] || [];
-            if (callback) this.pending[url].push(callback); //add callback to the queue
+            if (this.pending[url]) {
+                this.pending[url].push(callback);
+                return;
+            } else {
+                this.pending[url] = [callback];
+            }
 
             jQuery.ajax({ //load template
                 url : url,

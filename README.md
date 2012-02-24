@@ -1,15 +1,15 @@
 Template loader for Backbone JS
 =======
 
-This loader used to make easier to handle templates in Backbone.
+This loader used to make easier to handle templates in Backbone (lazy loading, caching, etc.).
 
-Example page available http://glibin.github.com/backbone-template-loader
+Example page available at http://glibin.github.com/backbone-template-loader
 
 Usage
 ============
 
     window.AppView = Core.View.extend({
-        el: $("#all"),
+        el: $("#app"),
 
         // Url to template
         templateUrl: '/templates/app.html',

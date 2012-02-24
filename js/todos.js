@@ -71,13 +71,13 @@ $(function(){
   // --------------
 
   // The DOM element for a todo item...
-  window.TodoView = Backbone.View.extend({
+  window.TodoView = Core.View.extend({
 
     //... is a list tag.
     tagName:  "li",
 
     // Cache the template function for a single item.
-    template: _.template($('#item-template').html()),
+    templateUrl: 'templates/item.html',
 
     // The DOM events specific to an item.
     events: {
@@ -89,12 +89,14 @@ $(function(){
 
     // The TodoView listens for changes to its model, re-rendering.
     initialize: function() {
+      TodoView.__super__.initialize.apply(this);
+
       this.model.bind('change', this.render, this);
       this.model.bind('destroy', this.remove, this);
     },
 
     // Re-render the contents of the todo item.
-    render: function() {
+    _render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
       this.setText();
       return this;
@@ -147,14 +149,14 @@ $(function(){
   // ---------------
 
   // Our overall **AppView** is the top-level piece of UI.
-  window.AppView = Backbone.View.extend({
+  window.AppView = Core.View.extend({
 
     // Instead of generating a new element, bind to the existing skeleton of
     // the App already present in the HTML.
     el: $("#todoapp"),
 
     // Our template for the line of statistics at the bottom of the app.
-    statsTemplate: _.template($('#stats-template').html()),
+    templateUrl: 'templates/stats.html',
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
@@ -167,6 +169,8 @@ $(function(){
     // collection, when items are added or changed. Kick things off by
     // loading any preexisting todos that might be saved in *localStorage*.
     initialize: function() {
+      AppView.__super__.initialize.apply(this);
+
       this.input    = this.$("#new-todo");
 
       Todos.bind('add',   this.addOne, this);
@@ -178,8 +182,8 @@ $(function(){
 
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
-    render: function() {
-      this.$('#todo-stats').html(this.statsTemplate({
+    _render: function() {
+      this.$('#todo-stats').html(this.template({
         total:      Todos.length,
         done:       Todos.done().length,
         remaining:  Todos.remaining().length

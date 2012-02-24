@@ -42,9 +42,9 @@
             if (this.pending[url]) {
                 this.pending[url].push(callback);
                 return;
-            } else {
-                this.pending[url] = [callback];
             }
+
+            this.pending[url] = [callback];
 
             jQuery.ajax({ //load template
                 url : url,
